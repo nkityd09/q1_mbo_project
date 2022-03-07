@@ -1,4 +1,4 @@
-Script will create/use below AWS resources
+# Script will create/use below AWS resources
 
 1. Create S3 buckets
    
