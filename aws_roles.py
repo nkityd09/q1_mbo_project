@@ -68,11 +68,12 @@ for i in range(len(policy_arns)):
     policy_dict[ap.policy_names[i]] = policy_arns[i]
 
 #TODO: 
-def attach_policy(role_name, role_arn):
-    response = iam.attach_role_policy(
-        RoleName=role_name,
-        PolicyArn=role_arn
-    )
+def attach_policy(role_name, *role_arn):
+    for role_arn in role_arn:
+        response = iam.attach_role_policy(
+            RoleName=role_name,
+            PolicyArn=role_arn
+        )
     
 
 s3.create_bucket(S3_BUCKET_NAME)
@@ -80,15 +81,25 @@ create_iam_role_profile(ID_BROKER_ROLE_NAME, aws_cdp_ec2_role_trust_policy_docum
 create_iam_role_profile(LOG_ROLE_NAME, aws_cdp_ec2_role_trust_policy_document)
 create_iam_role(RANGER_AUDIT_ROLE_NAME, aws_cdp_idbroker_role_trust_policy_document)
 create_iam_role(DATALAKE_ADMIN_ROLE_NAME, aws_cdp_idbroker_role_trust_policy_document)
-attach_policy(ID_BROKER_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_idbroker_assume_role_policy'])
-attach_policy(ID_BROKER_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_log_policy'])
+# attach_policy(ID_BROKER_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_idbroker_assume_role_policy'])
+# attach_policy(ID_BROKER_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_log_policy'])
+# attach_policy(LOG_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_log_policy'])
+# attach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_ranger_audit_s3_policy'])
+# attach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_bucket_access_policy'])
+# attach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_backup_policy'])
+# attach_policy(DATALAKE_ADMIN_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_datalake_admin_s3_policy'])
+# attach_policy(DATALAKE_ADMIN_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_bucket_access_policy'])
+# attach_policy(DATALAKE_ADMIN_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_backup_policy'])
+
+attach_policy(ID_BROKER_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_idbroker_assume_role_policy'],policy_dict[USERNAME+'aws_cdp_log_policy'])
+#attach_policy(ID_BROKER_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_log_policy'])
 attach_policy(LOG_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_log_policy'])
-attach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_ranger_audit_s3_policy'])
-attach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_bucket_access_policy'])
-attach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_backup_policy'])
-attach_policy(DATALAKE_ADMIN_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_datalake_admin_s3_policy'])
-attach_policy(DATALAKE_ADMIN_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_bucket_access_policy'])
-attach_policy(DATALAKE_ADMIN_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_backup_policy'])
+attach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_ranger_audit_s3_policy'],policy_dict[USERNAME+'aws_cdp_bucket_access_policy'],policy_dict[USERNAME+'aws_cdp_backup_policy'])
+# attach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_bucket_access_policy'])
+# attach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_backup_policy'])
+attach_policy(DATALAKE_ADMIN_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_datalake_admin_s3_policy'],policy_dict[USERNAME+'aws_cdp_bucket_access_policy'],policy_dict[USERNAME+'aws_cdp_backup_policy'])
+# attach_policy(DATALAKE_ADMIN_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_bucket_access_policy'])
+# attach_policy(DATALAKE_ADMIN_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_backup_policy'])
 
 
 #####Rough Code#####
