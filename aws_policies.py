@@ -1,3 +1,4 @@
+from tkinter import Y
 import boto3
 import json
 import configparser
@@ -11,7 +12,7 @@ iam = boto3.client('iam')
 #TODO: Ensure bucket name is setup correctly in all policies and 
 LOGS_BUCEKT=config.get('S3', 'S3_BUCKET_ARN')
 LOGS_LOCATION_BASE=config.get('S3', 'S3_BUCKET_ARN')
-USERNAME = config.get('NAMES', 'USERNAME_PREFIX') # Username will be appended to all policy names 
+USERNAME = config.get('NAMES', 'USERNAME_PREFIX') # Username will be appended to all policy names
 
 
 #####AWS Policies#####
@@ -193,9 +194,13 @@ aws_cdp_backup_policy_document = {
 
 # creating lists for policy names and policy documents
 
-policy_names= [USERNAME+"aws_cdp_log_policy", USERNAME+"aws_cdp_idbroker_assume_role_policy", USERNAME+"aws_cdp_ranger_audit_s3_policy", USERNAME+"aws_cdp_datalake_admin_s3_policy", USERNAME+"aws_cdp_bucket_access_policy", USERNAME+"aws_cdp_backup_policy"]
+policy_names= [USERNAME+"aws_cdp_log_policy", USERNAME+"aws_cdp_idbroker_assume_role_policy",
+ USERNAME+"aws_cdp_ranger_audit_s3_policy", USERNAME+"aws_cdp_datalake_admin_s3_policy", 
+ USERNAME+"aws_cdp_bucket_access_policy", USERNAME+"aws_cdp_backup_policy"]
 
-policy_documents = [aws_cdp_log_policy_document, aws_cdp_idbroker_assume_role_policy_document, aws_cdp_ranger_audit_s3_policy_document, aws_cdp_datalake_admin_s3_policy_document, aws_cdp_bucket_access_policy_document, aws_cdp_backup_policy_document]
+policy_documents = [aws_cdp_log_policy_document, aws_cdp_idbroker_assume_role_policy_document, 
+ aws_cdp_ranger_audit_s3_policy_document, aws_cdp_datalake_admin_s3_policy_document, 
+ aws_cdp_bucket_access_policy_document, aws_cdp_backup_policy_document]
 
 #zip function pairs the first item of each list together
 
@@ -210,9 +215,7 @@ def create_policy(zip_list):
 			PolicyName=policy_names,
 			PolicyDocument=json.dumps(policy_documents)
 		)
-
-
-
+	
 create_policy(zipped_files)
 
 
