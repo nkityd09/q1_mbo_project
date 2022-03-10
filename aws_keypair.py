@@ -1,9 +1,6 @@
 import boto3
 import json
-import configparser
 
-config = configparser.ConfigParser()
-config.read('config.ini')
 ec2 = boto3.client('ec2')
 
 def create_ssh_key_pair(key_pair_name):

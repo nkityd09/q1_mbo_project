@@ -1,4 +1,3 @@
-from tkinter import Y
 import boto3
 import json
 import configparser
@@ -12,7 +11,7 @@ iam = boto3.client('iam')
 #TODO: Ensure bucket name is setup correctly in all policies and 
 LOGS_BUCEKT=config.get('S3', 'S3_BUCKET_ARN')
 LOGS_LOCATION_BASE=config.get('S3', 'S3_BUCKET_ARN')
-USERNAME = config.get('NAMES', 'USERNAME_PREFIX') # Username will be appended to all policy names
+USERNAME = config.get('NAMES', 'USERNAME_PREFIX')  # Username will be appended to all policy names
 
 
 #####AWS Policies#####
