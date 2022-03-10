@@ -46,7 +46,12 @@ def create_iam_role_profile(role_name, policy_name):
     create_profile = iam.create_instance_profile(
         InstanceProfileName=role_name
     )
-    return create_role, create_profile
+
+    add_role_to_profile = iam.add_role_to_instance_profile(
+    InstanceProfileName=role_name,
+    RoleName=role_name
+    )
+    return create_role, create_profile, add_role_to_profile
 
 def create_iam_role(role_name, policy_name):
     response = iam.create_role(
@@ -67,7 +72,7 @@ policy_dict = {}
 for i in range(len(policy_arns)):
     policy_dict[ap.policy_names[i]] = policy_arns[i]
 
- 
+
 def attach_policy(role_name, *role_arn):
     for role_arn in role_arn:
         response = iam.attach_role_policy(
