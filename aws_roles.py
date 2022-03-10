@@ -33,7 +33,7 @@ aws_cdp_idbroker_role_trust_policy_document = {
 	"Statement": [{
 		"Effect": "Allow",
 		"Principal": {
-			"AWS": "arn:aws:iam::268282262010:role/ankity-cloudera-idbroker-role"
+			"AWS": "arn:aws:iam::"+AWS_ACCOUNT_ID+":role/"+ID_BROKER_ROLE_NAME
 		},
 		"Action": "sts:AssumeRole"
 	}]
