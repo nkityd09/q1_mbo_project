@@ -4,6 +4,7 @@ import aws_policies as ap
 import aws_s3 as s3
 import aws_keypair as kp
 import configparser
+import time
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -17,6 +18,8 @@ LOG_ROLE_NAME = config.get('NAMES', 'LOG_ROLE_NAME')
 RANGER_AUDIT_ROLE_NAME = config.get('NAMES', 'RANGER_AUDIT_ROLE_NAME')
 DATALAKE_ADMIN_ROLE_NAME = config.get('NAMES', 'DATALAKE_ADMIN_ROLE_NAME')
 KEYPAIR_NAME = config.get('NAMES', 'KEYPAIR_NAME')
+ID_BROKER_ROLE_ARN = "arn:aws:iam::"+AWS_ACCOUNT_ID+":role/"+ID_BROKER_ROLE_NAME
+print(ID_BROKER_ROLE_ARN)
 
 aws_cdp_ec2_role_trust_policy_document = {
 	"Version": "2012-10-17",
@@ -33,11 +36,13 @@ aws_cdp_idbroker_role_trust_policy_document = {
 	"Statement": [{
 		"Effect": "Allow",
 		"Principal": {
-			"AWS": "arn:aws:iam::"+AWS_ACCOUNT_ID+":role/"+ID_BROKER_ROLE_NAME
+			"AWS": ID_BROKER_ROLE_ARN
 		},
 		"Action": "sts:AssumeRole"
 	}]
 }
+
+print(json.dumps(aws_cdp_idbroker_role_trust_policy_document))
 
 def create_iam_role_profile(role_name, policy_name):
     create_role = iam.create_role(
@@ -84,9 +89,10 @@ def attach_policy(role_name, *role_arn):
     
 
 s3.create_bucket(S3_BUCKET_NAME)
-kp.create_ssh_key_pair(KEYPAIR_NAME)
+# kp.create_ssh_key_pair(KEYPAIR_NAME)
 create_iam_role_profile(ID_BROKER_ROLE_NAME, aws_cdp_ec2_role_trust_policy_document)
 create_iam_role_profile(LOG_ROLE_NAME, aws_cdp_ec2_role_trust_policy_document)
+time.sleep(8)
 create_iam_role(RANGER_AUDIT_ROLE_NAME, aws_cdp_idbroker_role_trust_policy_document)
 create_iam_role(DATALAKE_ADMIN_ROLE_NAME, aws_cdp_idbroker_role_trust_policy_document)
 attach_policy(ID_BROKER_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_idbroker_assume_role_policy'],policy_dict[USERNAME+'aws_cdp_log_policy'])

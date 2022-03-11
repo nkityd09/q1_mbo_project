@@ -18,6 +18,11 @@ S3_BUCKET_NAME = config.get('S3', 'S3_BUCKET')
 policy_names_= [USERNAME+"aws_cdp_log_policy", USERNAME+"aws_cdp_idbroker_assume_role_policy", USERNAME+"aws_cdp_ranger_audit_s3_policy", USERNAME+"aws_cdp_datalake_admin_s3_policy", USERNAME+"aws_cdp_bucket_access_policy", USERNAME+"aws_cdp_backup_policy"]
 
 def cleanup_roles_profiles(rolename):
+    remove_role_to_profile = iam.remove_role_from_instance_profile(
+    InstanceProfileName=rolename,
+    RoleName=rolename
+    )
+    
     response = iam.delete_instance_profile(
         InstanceProfileName=rolename
     )
@@ -25,6 +30,8 @@ def cleanup_roles_profiles(rolename):
     response = iam.delete_role(
         RoleName = rolename
     )
+
+    
 
 def cleanup_roles(rolename):
     response = iam.delete_role(
@@ -70,18 +77,20 @@ def delete_s3_bucket(bucket_name):
     Bucket=bucket_name
     )
 
-detach_policy(ID_BROKER_ROLE_NAME, policy_dict[USERNAME+"aws_cdp_idbroker_assume_role_policy"])
-detach_policy(ID_BROKER_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_log_policy'])
-detach_policy(LOG_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_log_policy'])
-detach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_ranger_audit_s3_policy'])
-detach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_bucket_access_policy'])
-detach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_backup_policy'])
-detach_policy(DATALAKE_ADMIN_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_datalake_admin_s3_policy'])
-detach_policy(DATALAKE_ADMIN_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_bucket_access_policy'])
-detach_policy(DATALAKE_ADMIN_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_backup_policy'])
-cleanup()
-cleanup_roles_profiles(ID_BROKER_ROLE_NAME)
-cleanup_roles_profiles(LOG_ROLE_NAME)
-cleanup_roles(RANGER_AUDIT_ROLE_NAME)
-cleanup_roles(DATALAKE_ADMIN_ROLE_NAME)
-delete_s3_bucket(S3_BUCKET_NAME)
+# detach_policy(ID_BROKER_ROLE_NAME, policy_dict[USERNAME+"aws_cdp_idbroker_assume_role_policy"])
+# detach_policy(ID_BROKER_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_log_policy'])
+# detach_policy(LOG_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_log_policy'])
+# detach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_ranger_audit_s3_policy'])
+# detach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_bucket_access_policy'])
+# detach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_backup_policy'])
+# detach_policy(DATALAKE_ADMIN_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_datalake_admin_s3_policy'])
+# detach_policy(DATALAKE_ADMIN_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_bucket_access_policy'])
+# detach_policy(DATALAKE_ADMIN_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_backup_policy'])
+
+# cleanup()
+# cleanup_roles_profiles(ID_BROKER_ROLE_NAME)
+# cleanup_roles_profiles(LOG_ROLE_NAME)
+# cleanup_roles(RANGER_AUDIT_ROLE_NAME)
+# cleanup_roles(DATALAKE_ADMIN_ROLE_NAME)
+# #TODO: Add delete keypair function
+delete_s3_bucket(S3_BUCKET_NAME) #TODO: Make bucket empty before deleting
