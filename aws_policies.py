@@ -8,13 +8,10 @@ iam = boto3.client('iam')
 
 #####Global Variables#####
 
-#TODO: Ensure bucket name is setup correctly in all policies and 
 LOGS_BUCEKT=config.get('S3', 'S3_BUCKET_ARN')
 LOGS_LOCATION_BASE=config.get('S3', 'S3_BUCKET_ARN')
-AWS_ACCOUNT_ID = config.get('NAMES', 'AWS_ACCOUNT_ID')
-ID_BROKER_ROLE_NAME = config.get('NAMES', 'ID_BROKER_ROLE_NAME')
 USERNAME = config.get('NAMES', 'USERNAME_PREFIX')  # Username will be appended to all policy names
-ID_BROKER_ROLE_ARN = "arn:aws:iam::"+AWS_ACCOUNT_ID+":role/"+ID_BROKER_ROLE_NAME
+
 #####AWS Policies#####
 
 aws_cdp_log_policy_document = {
@@ -36,6 +33,19 @@ aws_cdp_log_policy_document = {
 			"Resource": LOGS_LOCATION_BASE+"/*"
 		}
 	]
+}
+
+aws_cdp_backup_policy_document = {
+	"Version": "2012-10-17",
+	"Statement": [{
+		"Effect": "Allow",
+		"Action": [
+			"s3:AbortMultipartUpload",
+			"s3:ListMultipartUploadParts",
+			"s3:PutObject"
+		],
+		"Resource": LOGS_LOCATION_BASE+"/*" 
+	}]
 }
 
 aws_cdp_idbroker_assume_role_policy_document ={
@@ -177,20 +187,6 @@ aws_cdp_bucket_access_policy_document = {
 		}
 	]
 }
-
-aws_cdp_backup_policy_document = {
-	"Version": "2012-10-17",
-	"Statement": [{
-		"Effect": "Allow",
-		"Action": [
-			"s3:AbortMultipartUpload",
-			"s3:ListMultipartUploadParts",
-			"s3:PutObject"
-		],
-		"Resource": LOGS_LOCATION_BASE+"/*" 
-	}]
-}
-
 
 
 # creating lists for policy names and policy documents
