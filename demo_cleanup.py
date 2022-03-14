@@ -5,6 +5,8 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 iam = boto3.client('iam')
 s3 = boto3.client('s3')
+s3_resource = boto3.resource('s3')
+ec2 = boto3.client('ec2')
 
 USERNAME = config.get('NAMES', 'USERNAME_PREFIX')
 ID_BROKER_ROLE_NAME=config.get('NAMES', 'ID_BROKER_ROLE_NAME')
@@ -13,6 +15,7 @@ RANGER_AUDIT_ROLE_NAME=config.get('NAMES', 'RANGER_AUDIT_ROLE_NAME')
 DATALAKE_ADMIN_ROLE_NAME=config.get('NAMES', 'DATALAKE_ADMIN_ROLE_NAME')
 AWS_ACCOUNT_ID=config.get('NAMES', 'AWS_ACCOUNT_ID')
 S3_BUCKET_NAME = config.get('S3', 'S3_BUCKET')
+KEYPAIR_NAME = config.get('NAMES', 'KEYPAIR_NAME')
 
 #TODO: Change name of below variable
 policy_names_= [USERNAME+"aws_cdp_log_policy", USERNAME+"aws_cdp_idbroker_assume_role_policy", USERNAME+"aws_cdp_ranger_audit_s3_policy", USERNAME+"aws_cdp_datalake_admin_s3_policy", USERNAME+"aws_cdp_bucket_access_policy", USERNAME+"aws_cdp_backup_policy"]
@@ -73,24 +76,31 @@ def detach_policy(role_name, role_arn):
     )        
 
 def delete_s3_bucket(bucket_name):
+    bucket = s3_resource.Bucket(bucket_name)
+    bucket.objects.all().delete()
     response = s3.delete_bucket(
     Bucket=bucket_name
     )
 
-# detach_policy(ID_BROKER_ROLE_NAME, policy_dict[USERNAME+"aws_cdp_idbroker_assume_role_policy"])
-# detach_policy(ID_BROKER_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_log_policy'])
-# detach_policy(LOG_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_log_policy'])
-# detach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_ranger_audit_s3_policy'])
-# detach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_bucket_access_policy'])
-# detach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_backup_policy'])
-# detach_policy(DATALAKE_ADMIN_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_datalake_admin_s3_policy'])
-# detach_policy(DATALAKE_ADMIN_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_bucket_access_policy'])
-# detach_policy(DATALAKE_ADMIN_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_backup_policy'])
+def delete_ssh_key_pair(key_pair_name):
+    key_pair = ec2.delete_key_pair(
+        KeyName = key_pair_name
+    )
 
-# cleanup()
-# cleanup_roles_profiles(ID_BROKER_ROLE_NAME)
-# cleanup_roles_profiles(LOG_ROLE_NAME)
-# cleanup_roles(RANGER_AUDIT_ROLE_NAME)
-# cleanup_roles(DATALAKE_ADMIN_ROLE_NAME)
-# #TODO: Add delete keypair function
-delete_s3_bucket(S3_BUCKET_NAME) #TODO: Make bucket empty before deleting
+detach_policy(ID_BROKER_ROLE_NAME, policy_dict[USERNAME+"aws_cdp_idbroker_assume_role_policy"])
+detach_policy(ID_BROKER_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_log_policy'])
+detach_policy(LOG_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_log_policy'])
+detach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_ranger_audit_s3_policy'])
+detach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_bucket_access_policy'])
+detach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_backup_policy'])
+detach_policy(DATALAKE_ADMIN_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_datalake_admin_s3_policy'])
+detach_policy(DATALAKE_ADMIN_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_bucket_access_policy'])
+detach_policy(DATALAKE_ADMIN_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_backup_policy'])
+
+cleanup()
+cleanup_roles_profiles(ID_BROKER_ROLE_NAME)
+cleanup_roles_profiles(LOG_ROLE_NAME)
+cleanup_roles(RANGER_AUDIT_ROLE_NAME)
+cleanup_roles(DATALAKE_ADMIN_ROLE_NAME)
+delete_ssh_key_pair(KEYPAIR_NAME)
+delete_s3_bucket(S3_BUCKET_NAME)
