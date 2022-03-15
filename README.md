@@ -6,5 +6,5 @@ Our project aims at reducing the manual steps of creating resources on AWS and r
 
 ## Execution Flow Diagram 
 
-![Execution Flow Diagram](Q1_MBO_Project_Execution_Flow_Graph.jpeg)
+![Execution Flow Diagram](.images/Q1_MBO_Project_Execution_Flow_Graph.jpeg)
 
