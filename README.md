@@ -5,4 +5,4 @@ CDP currently requires certain AWS resources to be created manually before an En
 Our project aims at reducing the manual steps of creating resources on AWS and registering an Environment on CDP using the CDP CLI and Boto3 library.`
 
 ## Execution Flow Diagram 
-![Execution Flow Diagram](Q1_MBO_Project_Execution_Flow_Graph.jpeg)
+![Execution Flow Diagram](/Users/ankity/Desktop/Development/Q1_MBO/q1_mbo_project/images/Q1_MBO_Project_Execution_Flow_Graph.jpeg)
