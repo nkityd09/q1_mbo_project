@@ -11,6 +11,7 @@ iam = boto3.client('iam')
 LOGS_BUCEKT=config.get('S3', 'S3_BUCKET_ARN')
 LOGS_LOCATION_BASE=config.get('S3', 'S3_BUCKET_ARN')
 USERNAME = config.get('NAMES', 'USERNAME_PREFIX')  # Username will be appended to all policy names
+AWS_ACCOUNT_ID = config.get('NAMES', 'AWS_ACCOUNT_ID')
 
 #####AWS Policies#####
 
@@ -204,6 +205,19 @@ policy_documents = [aws_cdp_log_policy_document, aws_cdp_idbroker_assume_role_po
 zipped_files = zip(policy_names, policy_documents) 
 
 
+def generate_policy_arn(account_id):
+    policy_arns = []
+    for i in range(len(policy_names)):
+        policy_arns.append("arn:aws:iam::"+account_id+":policy/"+policy_names[i])
+    return policy_arns
+
+policy_arns = generate_policy_arn(AWS_ACCOUNT_ID)
+policy_dict = {}
+
+for i in range(len(policy_arns)):
+    policy_dict[policy_names[i]] = policy_arns[i]
+
+
 #####create_policy function creates IAM policies using policy names and policy documents#####
 
 def create_policy(zip_list):
@@ -212,8 +226,7 @@ def create_policy(zip_list):
 			PolicyName=policy_names,
 			PolicyDocument=json.dumps(policy_documents)
 		)
-	
-create_policy(zipped_files)
+
 
 
 #####Rough Code#####
