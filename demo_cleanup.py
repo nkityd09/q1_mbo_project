@@ -70,10 +70,11 @@ for i in range(len(policy_arns)):
 
 
 def detach_policy(role_name, *role_arn):
-    response = iam.detach_role_policy(
-        RoleName=role_name,
-        PolicyArn=role_arn
-    )        
+    for role_arn in role_arn:
+        response = iam.detach_role_policy(
+            RoleName=role_name,
+            PolicyArn=role_arn
+        )        
 
 def delete_s3_bucket(bucket_name):
     bucket = s3_resource.Bucket(bucket_name)
@@ -89,7 +90,7 @@ def delete_ssh_key_pair(key_pair_name):
 
 detach_policy(ID_BROKER_ROLE_NAME, policy_dict[USERNAME+"aws_cdp_idbroker_assume_role_policy"], policy_dict[USERNAME+'aws_cdp_log_policy'])
 detach_policy(LOG_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_log_policy'])
-detach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_ranger_audit_s3_policy'],policy_dict[USERNAME+'aws_cdp_bucket_access_policy'],policy_dict[USERNAME+'aws_cdp_backup_policy'])
+detach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_ranger_audit_s3_policy'], policy_dict[USERNAME+'aws_cdp_bucket_access_policy'], policy_dict[USERNAME+'aws_cdp_backup_policy'])
 detach_policy(DATALAKE_ADMIN_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_datalake_admin_s3_policy'], policy_dict[USERNAME+'aws_cdp_bucket_access_policy'], policy_dict[USERNAME+'aws_cdp_backup_policy'])
 
 cleanup()

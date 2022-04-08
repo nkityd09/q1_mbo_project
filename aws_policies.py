@@ -226,7 +226,9 @@ def create_policy(zip_list):
 			PolicyName=policy_names,
 			PolicyDocument=json.dumps(policy_documents)
 		)
-
+		print(" ")
+		print("Created IAM Policy -> ",cdp_policy_create["Policy"]["PolicyName"])
+		print(" ")
 
 
 #####Rough Code#####

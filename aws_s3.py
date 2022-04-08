@@ -11,5 +11,8 @@ def create_bucket(bucket_name):
             'LocationConstraint': 'us-east-2'
         }
     )
+    print(" ")
+    print("Created S3 Bucket -> ",response["Location"])
+    print(" ")
 
 
