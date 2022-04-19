@@ -55,7 +55,8 @@ def create_iam_role_profile(role_name, policy_name):
     print("Created IAM Role -> ", create_role["Role"]["RoleName"])
     print("Created IAM Profile -> ", create_profile["InstanceProfile"]["InstanceProfileName"])
     print(" ")
-    return create_role, create_profile, add_role_to_profile
+    
+    return create_profile["InstanceProfile"]["Arn"]
 
 # Function to create only IAM role 
 
@@ -67,7 +68,7 @@ def create_iam_role(role_name, policy_name):
     print(" ")
     print("Created IAM Role -> ", create_role["Role"]["RoleName"])
     print(" ")
-    return create_role
+    return create_role["Role"]["Arn"]
 
 # Function to attach IAM Policy to IAM Role
 

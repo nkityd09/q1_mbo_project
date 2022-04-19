@@ -1,8 +1,8 @@
 import boto3
-import json
-import configparser
 
 s3 = boto3.client("s3")
+
+#Create S3 Bucket
 
 def create_bucket(bucket_name):
     response = s3.create_bucket(

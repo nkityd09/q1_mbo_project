@@ -231,4 +231,3 @@ def create_policy(zip_list):
 		print(" ")
 
 
-#####Rough Code#####
