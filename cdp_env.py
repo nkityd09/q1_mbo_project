@@ -1,5 +1,6 @@
 import os
 
+#Creating env
 #Create CDP Environment 
 def create_env(env_name, cred_name, region, keypair, storage_base, inst_prof, cidr):
     os.system(f'cdp environments create-aws-environment --environment-name {env_name} --credential-name {cred_name} --region "{region}" --security-access cidr=0.0.0.0/0 --enable-tunnel --authentication publicKeyId="{keypair}" --log-storage storageLocationBase=s3a://{storage_base}/my-data,instanceProfile={inst_prof} --network-cidr {cidr} --free-ipa instanceCountByGroup=1')
