@@ -30,7 +30,33 @@ Our project aims at reducing the manual steps of creating resources on AWS and r
 
 1. Edit the config.ini file 
    The config.ini file acts as the central repository for all configurations which will be used to create the resources and environment. 
+   ```
+   [S3]
+   S3_BUCKET=mboq1-cdp-boto3
+   S3_BUCKET_ARN=arn:aws:s3:::mboq1-cdp-boto3
+
+   [NAMES]
+   AWS_ACCOUNT_ID=268282262010
+   USERNAME_PREFIX=mboq1_boto3_
+   ID_BROKER_ROLE_NAME=mboq1_boto3_ID_BROKER_ROLE
+   LOG_ROLE_NAME=mboq1_boto3_LOG_ROLE
+   RANGER_AUDIT_ROLE_NAME=mboq1_boto3_RANGER_AUDIT
+   DATALAKE_ADMIN_ROLE_NAME=mboq1_boto3_DATALAKE_ADMIN
+   KEYPAIR_NAME=mboq1_boto3_keypair
+   
+   [CDP_NAMES]
+   ENV_NAME="mboq1-boto3-env"
+   CREDENTIAL_NAME="ankity-credentials"
+   REGION="us-east-2"
+   CIDR="10.10.0.0/16"
+   DATALAKE_NAME="mboq1-boto3-datalake"
+   DATALAKE_SIZE="LIGHT_DUTY"
+   DATALAKE_RUNTIME="7.2.14"
+   ```
 2. Use python3 to execute the main.py file
+   ```
+   python3 main.py
+   ```
 ## Execution Flow Diagram 
 
 ![Execution Flow Diagram](images/Q1_MBO_Project_Execution_Flow_Graph.jpeg)
