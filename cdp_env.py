@@ -12,3 +12,9 @@ def create_id_broker(env_name, data_role, ranger_role):
 #Create DataLake 
 def create_datalake(dl_name, env_name, id_inst_prof, storage_base, dl_size, dl_runtime):
     os.system(f'cdp datalake create-aws-datalake --datalake-name {dl_name} --environment-name {env_name} --cloud-provider-configuration instanceProfile={id_inst_prof},storageBucketLocation=s3a://{storage_base}/my-data --scale {dl_size} --runtime {dl_runtime}')
+
+def delete_env(env_name):
+    os.system(f'cdp environments delete-environment --environment-name {env_name}')
+
+def delete_datalake(dl_name):    
+    os.system(f'cdp datalake delete-datalake --datalake-name {dl_name}')

@@ -6,7 +6,7 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 iam = boto3.client('iam')
 
-# Global Variables
+#####Global Variables#####
 
 AWS_ACCOUNT_ID = config.get('NAMES', 'AWS_ACCOUNT_ID')
 ID_BROKER_ROLE_NAME = config.get('NAMES', 'ID_BROKER_ROLE_NAME')

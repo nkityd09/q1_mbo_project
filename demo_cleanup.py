@@ -1,6 +1,9 @@
 import boto3
 import json
 import configparser
+import time
+import cdp_env as ce
+from halo import Halo
 config = configparser.ConfigParser()
 config.read('config.ini')
 iam = boto3.client('iam')
@@ -16,6 +19,9 @@ DATALAKE_ADMIN_ROLE_NAME=config.get('NAMES', 'DATALAKE_ADMIN_ROLE_NAME')
 AWS_ACCOUNT_ID=config.get('NAMES', 'AWS_ACCOUNT_ID')
 S3_BUCKET_NAME = config.get('S3', 'S3_BUCKET')
 KEYPAIR_NAME = config.get('NAMES', 'KEYPAIR_NAME')
+ENV_NAME = config.get('CDP_NAMES','ENV_NAME')
+DATALAKE_NAME = config.get('CDP_NAMES','DATALAKE_NAME')
+spinner = Halo(text='Creating IAM resources', spinner='simpleDots')
 
 #TODO: Change name of below variable
 policy_names_= [USERNAME+"aws_cdp_log_policy", USERNAME+"aws_cdp_idbroker_assume_role_policy", USERNAME+"aws_cdp_ranger_audit_s3_policy", USERNAME+"aws_cdp_datalake_admin_s3_policy", USERNAME+"aws_cdp_bucket_access_policy", USERNAME+"aws_cdp_backup_policy"]
@@ -45,7 +51,7 @@ def cleanup_roles(rolename):
 #     PolicyArn='arn:aws:iam::268282262010:policy/aws_cdp_log_policy_ankit_boto3'
 # )
 
-policy_names= ["arn:aws:iam::268282262010:policy/ankity_boto3_aws_cdp_log_policy", "arn:aws:iam::268282262010:policy/ankity_boto3_aws_cdp_idbroker_assume_role_policy", "arn:aws:iam::268282262010:policy/ankity_boto3_aws_cdp_ranger_audit_s3_policy", "arn:aws:iam::268282262010:policy/ankity_boto3_aws_cdp_datalake_admin_s3_policy", "arn:aws:iam::268282262010:policy/ankity_boto3_aws_cdp_bucket_access_policy", "arn:aws:iam::268282262010:policy/ankity_boto3_aws_cdp_backup_policy"]
+policy_names= ["arn:aws:iam::268282262010:policy/"+USERNAME+"aws_cdp_log_policy", "arn:aws:iam::268282262010:policy/"+USERNAME+"aws_cdp_idbroker_assume_role_policy", "arn:aws:iam::268282262010:policy/"+USERNAME+"aws_cdp_ranger_audit_s3_policy", "arn:aws:iam::268282262010:policy/"+USERNAME+"aws_cdp_datalake_admin_s3_policy", "arn:aws:iam::268282262010:policy/"+USERNAME+"aws_cdp_bucket_access_policy", "arn:aws:iam::268282262010:policy/"+USERNAME+"aws_cdp_backup_policy"]
 
 
 def cleanup():
@@ -88,6 +94,14 @@ def delete_ssh_key_pair(key_pair_name):
         KeyName = key_pair_name
     )
 
+ce.delete_datalake(DATALAKE_NAME)
+spinner.start()
+time.sleep(1200)
+spinner.stop()
+ce.delete_env(ENV_NAME)
+spinner.start()
+time.sleep(300)
+spinner.stop()
 detach_policy(ID_BROKER_ROLE_NAME, policy_dict[USERNAME+"aws_cdp_idbroker_assume_role_policy"], policy_dict[USERNAME+'aws_cdp_log_policy'])
 detach_policy(LOG_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_log_policy'])
 detach_policy(RANGER_AUDIT_ROLE_NAME, policy_dict[USERNAME+'aws_cdp_ranger_audit_s3_policy'], policy_dict[USERNAME+'aws_cdp_bucket_access_policy'], policy_dict[USERNAME+'aws_cdp_backup_policy'])
