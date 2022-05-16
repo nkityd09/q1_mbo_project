@@ -59,6 +59,7 @@ Our project aims at reducing the manual steps of creating resources on AWS and r
    ```
 ## Execution Flow Diagram 
 
-![Execution Flow Diagram](images/Q1_MBO_Project_Execution_Flow_Graph.jpeg)
+![Execution Flow Diagram](images/MBO_Project.png)
 
 The main.py script imports other scripts and configurations. Once imported, the main.py file calls individual functions to create resources with the configurations as the parameters for them.
+
