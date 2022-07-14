@@ -2,28 +2,6 @@ import subprocess as sp
 
 # Assign roles to Assumer Identity
 
-# RG_NAME=
-# STORAGE_ACCOUNT_NAME=
-# SUBSCRIPTION_ID=
-ASSUMER_ROLE_NAME = "q2-mbo-AssumerIdentity"
-# DATAACCESS_ROLE_NAME=
-# LOGGER_ROLE_NAME=
-# RANGER_ROLE_NAME=
-# RANGER_RAZ_ROLE_NAME=
-# DL_CONTAINER=
-# LOG_CONTAINER=
-
-SUBSCRIPTIONID="da35404a-2612-4419-baef-45fcdce6045e"
-RG_NAME="q2-mbo"
-STORAGEACCOUNTNAME="testq2mbo"
-LOG_CONTAINER="logs"
-
-ASSUMER_OBJECTID = str(sp.getoutput(f"az identity show -g {RG_NAME} -n {ASSUMER_ROLE_NAME} | jq -r '.principalId'"))
-DATAACCESS_OBJECTID = str(sp.getoutput(f"az identity show -g {RG_NAME} -n {DATAACCESS_ROLE_NAME} | jq -r '.principalId'"))
-LOGGER_OBJECTID = str(sp.getoutput(f"az identity show -g {RG_NAME} -n {LOGGER_ROLE_NAME} | jq -r '.principalId'"))
-RANGER_OBJECTID = str(sp.getoutput(f"az identity show -g {RG_NAME} -n {RANGER_ROLE_NAME} | jq -r '.principalId'"))
-RANGER_RAZ_OBJECTID = str(sp.getoutput(f"az identity show -g {RG_NAME} -n {RANGER_RAZ_ROLE_NAME} | jq -r '.principalId'"))
-
 
 def assign_assumer(assumer_id, subscription_id, storage_account_name, log_container, rg_name):
     # Assign Managed Identity Operator role to the assumerIdentity principal at subscription scope
