@@ -1,10 +1,10 @@
 # Prerequisites for CDP on Azure
 ## Steps for running script
 
-1. Setup (Azure CLI)[https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-macos]
-2. (Sign in to Azure CLI)[https://docs.microsoft.com/en-us/cli/azure/get-started-with-azure-cli#how-to-sign-into-the-azure-cli]
+1. Setup [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-macos)
+2. [Sign in to Azure CLI](https://docs.microsoft.com/en-us/cli/azure/get-started-with-azure-cli#how-to-sign-into-the-azure-cli)
 3. Setup CDP CLI
-4. (Install jq)[https://stedolan.github.io/jq/download/]
+4. [Install jq](https://stedolan.github.io/jq/download/)
 5. Create Azure Subscription
 6. Create Azure App
 7. Create CDP Credential
