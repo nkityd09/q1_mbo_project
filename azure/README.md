@@ -15,9 +15,9 @@ az login
 
 ```
    az ad sp create-for-rbac \
->     --name http://q2-mbo \
->     --role Contributor \
->     --scopes /subscriptions/da35404a-2612-4419-baef-45fcdce6045e
+     --name http://q2-mbo \
+     --role Contributor \
+     --scopes /subscriptions/da35404a-2612-4419-baef-45fcdce6045e
 ```
 
 7.2 Run below command using CDP CLI
@@ -30,5 +30,38 @@ cdp environments create-azure-credential \
 --app-based applicationId=<applicaiton_id>, \
 secretKey=<app_password>
 ```
+8. Create SSH Keypair
 
-8. Configure config.ini file with required fields
+```
+ssh-keygen -m PEM -t rsa -b 4096
+```   
+
+9.  Configure config.ini file with required fields. Please add subnet names and CIDRs in a comma separated list without any spaces. Below is an example config.ini 
+
+```
+[AZURE]
+SUBSCRIPTION_ID=da35404a-2612-4419-baef-45fcdce6045e
+RGNAME=q2-mbo-code
+LOCATION=eastus
+ASSUMER_ROLE_NAME=q2-mbo-AssumerIdentity-code
+LOG_ROLE_NAME=q2-mbo-LoggerIdentity-code
+RANGER_AUDIT_ROLE_NAME=q2-mbo-RangerIdentity-code
+DATALAKE_ADMIN_ROLE_NAME=q2-mbo-DataAccessIdentity-code
+RANGER_RAZ=q2-mbo-RangerRaz-code
+VNET_NAME=q2-mbo-vnet-code
+VNET_CIDR=10.10.0.0/16
+NUMBER_OF_SUBNETS=3
+SUBNET_NAMES=q2-mbo-subnet1-code,q2-mbo-subnet2-code,q2-mbo-subnet3-code
+SUBNET_PREFIXES=10.10.0.0/24,10.10.1.0/24,10.10.2.0/24
+DL_SUBNET_NAME=q2-mbo-subnet1-code
+STORAGE_ACCOUNT=q2mbosacode
+DATALAKE_CONTAINER=data-code
+LOGS_CONTAINER=logs-code
+```
+
+10.  Run the following command to execute Script
+
+```
+python3 main.py
+```
+
