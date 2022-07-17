@@ -6,6 +6,7 @@ import az_storage_account as sa
 import az_network as nw
 import az_managed_identity as mi
 import az_assign_identities as ai
+import az_nsg as nsg
 import cdp_env as ce
 import time
 
@@ -17,6 +18,9 @@ config.read('config.ini')
 SUBSCRIPTION_ID = config.get('AZURE', 'SUBSCRIPTION_ID')
 RG_NAME = config.get('AZURE', 'RGNAME')
 LOCATION = config.get('AZURE', 'LOCATION')
+
+DEFAULT_NSG_NAME = config.get('AZURE', 'DEFAULT_NSG')
+KNOX_NSG_NAME = config.get('AZURE', 'KNOX_NSG')
 
 ASSUMER_ROLE_NAME = config.get('AZURE', 'ASSUMER_ROLE_NAME')
 DATAACCESS_ROLE_NAME = config.get('AZURE', 'DATALAKE_ADMIN_ROLE_NAME')
@@ -38,7 +42,8 @@ SUBNET_NAME_LIST = SUBNET_NAMES.split(',')
 DL_SUBNET = config.get('AZURE', 'DL_SUBNET_NAME')
 SUBNET_PREFIXES = str(config.get('AZURE', 'SUBNET_PREFIXES'))
 SUBNET_PREFIX_LIST = SUBNET_PREFIXES.split(',')
-KEYPAIR = config.get('CDP_NAMES', 'KEYPAIR')
+#KEYPAIR = config.get('CDP_NAMES', 'KEYPAIR')
+
 
 
     
@@ -48,6 +53,13 @@ def main():
     print('#####')
     print("Creating Azure Resource Group")
     rg.create_rg(RG_NAME, LOCATION)
+    #Create NSG in Azure
+    print('#####')
+    print("Creating Azure Resource Group")
+    nsg.create_nsg(DEFAULT_NSG_NAME, RG_NAME)
+    nsg.create_nsg(KNOX_NSG_NAME,RG_NAME)
+    nsg.create_nsg_rule_default(RG_NAME, DEFAULT_NSG_NAME, VNET_CIDR)
+    nsg.create_nsg_rule_knox(RG_NAME, KNOX_NSG_NAME, VNET_CIDR)
     #Create Azure Managed Identities
     print('#####')
     print("Createing Azure Managed Identity")
@@ -76,7 +88,7 @@ def main():
     print("Updating DataLake Subnets")
     nw.update_datalake_subnet(RG_NAME, VNET_NAME, DL_SUBNET)
     #Inducing Sleep for consistency
-    time.sleep(360)
+    time.sleep(60)
     ASSUMER_OBJECTID = str(sp.getoutput(f"az identity show -g {RG_NAME} -n{ASSUMER_ROLE_NAME} | jq -r '.principalId'"))
     DATAACCESS_OBJECTID = str(sp.getoutput(f"az identity show -g {RG_NAME} -n{DATAACCESS_ROLE_NAME} | jq -r '.principalId'"))
     LOGGER_OBJECTID = str(sp.getoutput(f"az identity show -g {RG_NAME} -n {LOGGER_ROLE_NAME}| jq -r '.principalId'"))

@@ -7,8 +7,7 @@
 4. [Install jq](https://stedolan.github.io/jq/download/)
 5. Create Azure Subscription
 6. Create Azure App
-7. Create CDP Credential
-7.1 Run below command on Azure CLI
+Run below command on Azure CLI
 ```
 az login
 ```
@@ -20,7 +19,8 @@ az login
      --scopes /subscriptions/da35404a-2612-4419-baef-45fcdce6045e
 ```
 
-7.2 Run below command using CDP CLI
+7. Create CDP Credential
+Run below command using CDP CLI
 
 ```
 cdp environments create-azure-credential \
