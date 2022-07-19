@@ -39,7 +39,6 @@ VNET_CIDR = config.get('AZURE', 'VNET_CIDR')
 NUMBER_OF_SUBNETS = int(config.get('AZURE', 'NUMBER_OF_SUBNETS'))
 SUBNET_NAMES = str(config.get('AZURE', 'SUBNET_NAMES'))
 SUBNET_NAME_LIST = SUBNET_NAMES.split(',')
-DL_SUBNET = config.get('AZURE', 'DL_SUBNET_NAME')
 SUBNET_PREFIXES = str(config.get('AZURE', 'SUBNET_PREFIXES'))
 SUBNET_PREFIX_LIST = SUBNET_PREFIXES.split(',')
 #KEYPAIR = config.get('CDP_NAMES', 'KEYPAIR')
@@ -85,8 +84,13 @@ def main():
         nw.create_subnet(RG_NAME, VNET_NAME, SUBNET_NAME_LIST[n], SUBNET_PREFIX_LIST[n])
     #Update Data Lake Subnet
     print('#####')
-    print("Updating DataLake Subnets")
-    nw.update_datalake_subnet(RG_NAME, VNET_NAME, DL_SUBNET)
+    print("Disabling private endpoint from Subnets")
+    for n in range(NUMBER_OF_SUBNETS):
+        nw.update_subnet_endpoint(RG_NAME, VNET_NAME, SUBNET_NAME_LIST[n])
+    print('#####')
+    print("Adding Storage endpoint to Subnets")
+    for n in range(NUMBER_OF_SUBNETS):
+        nw.update_subnet_sql_storage(RG_NAME, VNET_NAME, SUBNET_NAME_LIST[n])
     #Inducing Sleep for consistency
     time.sleep(60)
     ASSUMER_OBJECTID = str(sp.getoutput(f"az identity show -g {RG_NAME} -n{ASSUMER_ROLE_NAME} | jq -r '.principalId'"))
@@ -110,6 +114,8 @@ def main():
     print('#####')
     print("Assigning Logger Managed Identity")
     ai.assign_logger(LOGGER_OBJECTID, SUBSCRIPTION_ID, STORAGEACCOUNTNAME, LOG_CONTAINER, RG_NAME)
+    time.sleep(10)
+
 
 
 

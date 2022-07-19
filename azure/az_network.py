@@ -14,13 +14,13 @@ def create_subnet(rg_name, vnet_name, subnet_name, cidr):
     return subnet
 
 #Disable private endpoint and add sql and storage endpoints in Datalake subnet
-def update_datalake_subnet(rg_name, vnet_name, subnet_name):
+def update_subnet_endpoint(rg_name, vnet_name, subnet_name):
     disable_private_endpoint = sp.getoutput(f'az network vnet subnet update --name {subnet_name} --resource-group {rg_name} --vnet-name {vnet_name} --disable-private-endpoint-network-policies true')
 
-    sql_service_endpoint = sp.getoutput(f'az network vnet subnet update --resource-group {rg_name} --name {subnet_name} --vnet-name {vnet_name} --service-endpoints Microsoft.Sql')
+    print(disable_private_endpoint)
+    return disable_private_endpoint
 
-    storage_service_endpoint = sp.getoutput(f'az network vnet subnet update --resource-group {rg_name} --name {subnet_name} --vnet-name {vnet_name} --service-endpoints Microsoft.Storage')
-
-    print(disable_private_endpoint, sql_service_endpoint, storage_service_endpoint)
-    return disable_private_endpoint, sql_service_endpoint, storage_service_endpoint
-
+def update_subnet_sql_storage(rg_name, vnet_name, subnet_name):
+    service_endpoints = sp.getoutput(f'az network vnet subnet update --resource-group {rg_name} --name {subnet_name} --vnet-name {vnet_name} --service-endpoints Microsoft.Sql Microsoft.Storage')
+    print(service_endpoints)
+    return  service_endpoints
