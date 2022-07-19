@@ -1,9 +1,14 @@
 # Prerequisites for CDP on Azure
+
+![Execution Flow Diagram](images/Q2_MBO_Azure.jpg)
+
+The main.py script imports other scripts and configurations. Once imported, the main.py file calls individual functions to create resources with the configurations as the parameters for them.
+
 ## Steps for running script
 
 1. Setup [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-macos)
 2. [Sign in to Azure CLI](https://docs.microsoft.com/en-us/cli/azure/get-started-with-azure-cli#how-to-sign-into-the-azure-cli)
-3. Setup CDP CLI
+3. [Setup CDP CLI](https://docs.cloudera.com/cdp-public-cloud/cloud/cli/topics/mc-installing-cdp-client.html)
 4. [Install jq](https://stedolan.github.io/jq/download/)
 5. Create Azure Subscription
 6. Create Azure App
