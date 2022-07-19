@@ -1,6 +1,6 @@
 # Prerequisites for CDP on Azure
 
-![Execution Flow Diagram](images/Q2_MBO_Azure.jpg)
+![Execution Flow Diagram](images/../../images/Q2_MBO_Azure.jpg)
 
 The main.py script imports other scripts and configurations. Once imported, the main.py file calls individual functions to create resources with the configurations as the parameters for them.
 
