@@ -10,29 +10,47 @@ import az_nsg as nsg
 import cdp_env as ce
 import time
 
-
-
+#
+#Reading config.ini file for configurations
+#
 config = configparser.ConfigParser()
 config.read('config.ini')
 
+#
+#Configurations for Resource Group and Subscriptions
+#
 SUBSCRIPTION_ID = config.get('AZURE', 'SUBSCRIPTION_ID')
 RG_NAME = config.get('AZURE', 'RGNAME')
 LOCATION = config.get('AZURE', 'LOCATION')
 
+#
+#Configurations for Network Secuirty groups
+#
 DEFAULT_NSG_NAME = config.get('AZURE', 'DEFAULT_NSG')
 KNOX_NSG_NAME = config.get('AZURE', 'KNOX_NSG')
+
+#
+#Configurations for Managed Identities
+#
 
 ASSUMER_ROLE_NAME = config.get('AZURE', 'ASSUMER_ROLE_NAME')
 DATAACCESS_ROLE_NAME = config.get('AZURE', 'DATALAKE_ADMIN_ROLE_NAME')
 LOGGER_ROLE_NAME = config.get('AZURE', 'LOG_ROLE_NAME')
 RANGER_ROLE_NAME = config.get('AZURE', 'RANGER_AUDIT_ROLE_NAME')
 RANGER_RAZ_ROLE_NAME = config.get('AZURE', 'RANGER_RAZ')
-
 MI_LIST = [ASSUMER_ROLE_NAME, DATAACCESS_ROLE_NAME, LOGGER_ROLE_NAME, RANGER_ROLE_NAME, RANGER_RAZ_ROLE_NAME]
+
+#
+#Configurations for Storage Account and Containers
+#
 
 STORAGEACCOUNTNAME = config.get('AZURE', 'STORAGE_ACCOUNT')
 LOG_CONTAINER = config.get('AZURE', 'LOGS_CONTAINER')
 DL_CONTAINER = config.get('AZURE', 'DATALAKE_CONTAINER')
+
+#
+#Configurations for Virtual Network and Subnets
+#
 
 VNET_NAME = config.get('AZURE', 'VNET_NAME')
 VNET_CIDR = config.get('AZURE', 'VNET_CIDR')
@@ -42,9 +60,6 @@ SUBNET_NAME_LIST = SUBNET_NAMES.split(',')
 SUBNET_PREFIXES = str(config.get('AZURE', 'SUBNET_PREFIXES'))
 SUBNET_PREFIX_LIST = SUBNET_PREFIXES.split(',')
 #KEYPAIR = config.get('CDP_NAMES', 'KEYPAIR')
-
-
-
     
 
 def main():
@@ -77,6 +92,7 @@ def main():
     print('#####')
     print("Creating Azure VNet")
     nw.create_vnet(RG_NAME, VNET_NAME, VNET_CIDR, LOCATION)
+    time.sleep(10)
     #Create Azure Subnets
     print('#####')
     print("Creating Azure Subnets")
@@ -114,7 +130,7 @@ def main():
     print('#####')
     print("Assigning Logger Managed Identity")
     ai.assign_logger(LOGGER_OBJECTID, SUBSCRIPTION_ID, STORAGEACCOUNTNAME, LOG_CONTAINER, RG_NAME)
-    time.sleep(10)
+
 
 
 
