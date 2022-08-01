@@ -59,8 +59,15 @@ SUBNET_NAMES = str(config.get('AZURE', 'SUBNET_NAMES'))
 SUBNET_NAME_LIST = SUBNET_NAMES.split(',')
 SUBNET_PREFIXES = str(config.get('AZURE', 'SUBNET_PREFIXES'))
 SUBNET_PREFIX_LIST = SUBNET_PREFIXES.split(',')
-#KEYPAIR = config.get('CDP_NAMES', 'KEYPAIR')
-    
+KEYPAIR = config.get('CDP_NAMES', 'KEYPAIR')
+
+ENV_NAME = config.get('CDP_NAMES', 'ENV_NAME')
+CREDENTIAL_NAME = config.get('CDP_NAMES', 'CREDENTIAL_NAME')
+ENDPOINT_ACCESS = config.get('CDP_NAMES', 'ENDPOINT_ACCESS')
+DL_NAME = config.get('CDP_NAMES', 'DATALAKE_NAME')
+DL_SIZE = config.get('CDP_NAMES', 'DATALAKE_SIZE')
+DL_RUNTIME = config.get('CDP_NAMES', 'DATALAKE_RUNTIME') 
+REGION = config.get('CDP_NAMES', 'REGION') 
 
 def main():
     #Create RG in Azure
@@ -130,6 +137,18 @@ def main():
     print('#####')
     print("Assigning Logger Managed Identity")
     ai.assign_logger(LOGGER_OBJECTID, SUBSCRIPTION_ID, STORAGEACCOUNTNAME, LOG_CONTAINER, RG_NAME)
+    #Create CDP Environment
+    print('#####')
+    print("Creating CDP Environment")
+    ce.create_env(ENV_NAME, CREDENTIAL_NAME, REGION, ENDPOINT_ACCESS, KEYPAIR, LOG_CONTAINER, STORAGEACCOUNTNAME,SUBSCRIPTION_ID, RG_NAME, LOGGER_ROLE_NAME, VNET_NAME, SUBNET_NAMES, DEFAULT_NSG_NAME, KNOX_NSG_NAME)
+    print('#####')
+    time.sleep(30)
+    print("Creating CDP ID Broker")
+    ce.create_id_broker(ENV_NAME, SUBSCRIPTION_ID, RG_NAME, DATAACCESS_ROLE_NAME, RANGER_ROLE_NAME, RANGER_RAZ_ROLE_NAME)
+    time.sleep(30)
+    print('#####')
+    print("Creating CDP DataLake")
+    ce.create_datalake(DL_NAME, SUBSCRIPTION_ID, RG_NAME, ENV_NAME, DL_CONTAINER, STORAGEACCOUNTNAME, DL_SIZE, DL_RUNTIME, ASSUMER_ROLE_NAME)
 
 
 
