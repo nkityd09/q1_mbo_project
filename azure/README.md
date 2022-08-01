@@ -1,6 +1,4 @@
-# Prerequisites for CDP on Azure
-
-![Execution Flow Diagram](images/../../images/Q2_MBO_Azure.jpg)
+# Automating CDP Environment Registration On Azure
 
 The main.py script imports other scripts and configurations. Once imported, the main.py file calls individual functions to create resources with the configurations as the parameters for them.
 
@@ -69,4 +67,4 @@ LOGS_CONTAINER=logs-code
 ```
 python3 main.py
 ```
-
+![Execution Flow Diagram](images/../../images/Q2_MBO_Azure.jpg)
