@@ -2,7 +2,7 @@
 
 ## Introduction
 
-CDP requires certain [resources](https://docs.cloudera.com/management-console/cloud/environments-azure/topics/mc-azure-environments.html) be created by the CDP Admin before registering an environment, additionally, there are resources that either CDP or the CDP admin can create as a pre-requisite. Please refer to the below image for details
+CDP requires certain [resources](https://docs.cloudera.com/cdp-public-cloud/cloud/requirements-azure/topics/mc-azure-resources-and-services.html) be created by the CDP Admin before registering an environment, additionally, there are resources that either CDP or the CDP admin can create as a pre-requisite. Please refer to the below image for details
 
 ![Azure_Env](images/../../images/mc-azure-env-components.png)
 
