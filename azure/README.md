@@ -1,5 +1,13 @@
 # Automating CDP Environment Registration On Azure
 
+## Introduction
+
+CDP requires certain (resources)[https://docs.cloudera.com/management-console/cloud/environments-azure/topics/mc-azure-environments.html] be created by the CDP Admin before registering an environment, additionally, there are resources that either CDP or the CDP admin can create as a pre-requisite. Please refer to the below image for details
+
+![Azure_Env](images/../../images/mc-azure-env-components.png)
+
+Our project aims at reducing the manual steps of creating resources on Azure and registering an Environment on CDP using the CDP CLI and Azure CLI commands.
+
 The main.py script imports other scripts and configurations. Once imported, the main.py file calls individual functions to create resources with the configurations as the parameters for them.
 
 ## Steps for running script
@@ -56,10 +64,22 @@ VNET_CIDR=10.10.0.0/16
 NUMBER_OF_SUBNETS=3
 SUBNET_NAMES=q2-mbo-subnet1-code,q2-mbo-subnet2-code,q2-mbo-subnet3-code
 SUBNET_PREFIXES=10.10.0.0/24,10.10.1.0/24,10.10.2.0/24
-DL_SUBNET_NAME=q2-mbo-subnet1-code
 STORAGE_ACCOUNT=q2mbosacode
 DATALAKE_CONTAINER=data-code
 LOGS_CONTAINER=logs-code
+KNOX_NSG=q2-mbo-code-knox
+DEFAULT_NSG=q2-mbo-code-default
+DL_SUBNET_NAME = q2-mbo-subnet1-code
+
+[CDP_NAMES]
+ENV_NAME = q2-mbo-code
+CREDENTIAL_NAME = q2-mbo-credential
+ENDPOINT_ACCESS = PUBLIC
+DATALAKE_NAME = q2-mbo-code-datalake
+DATALAKE_SIZE = LIGHT_DUTY
+DATALAKE_RUNTIME = 7.2.15
+KEYPAIR = "ssh key pair"
+REGION = "East US"
 ```
 
 10.  Run the following command to execute Script
